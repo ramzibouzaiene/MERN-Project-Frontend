@@ -1,0 +1,3 @@
+[submodule "MERN-Project-backend"]
+	path = MERN-Project-backend
+	url = https://github.com/ramzibouzaiene/MERN-Project-backend
