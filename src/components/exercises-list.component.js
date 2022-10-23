@@ -3,6 +3,17 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
+const Exercise = props => (
+  <tr>
+    <td>{props.exercise.username}</td>
+    <td>{props.exercise.description}</td>
+    <td>{props.exercise.duration}</td>
+    <td>{props.exercise.date.substring(0,10)}</td>
+    <td>
+      <Link to={"/edit/"+props.exercise._id}>edit</Link> | <button className='alert-danger' href="#" onClick={() => { props.deleteExercise(props.exercise._id) }}>delete</button>
+    </td>
+  </tr>
+)
 
 export default class ExercisesList extends Component {
   constructor(props){
@@ -16,13 +27,11 @@ export default class ExercisesList extends Component {
   componentDidMount(){
     axios.get('http://localhost:4000/exercises/')
       .then(res => {
-        this.state({
+        this.setState({
           exercises : res.data
-        })
+        });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(err => console.log(err));
   };
 
   deleteExercise(id){
@@ -32,6 +41,12 @@ export default class ExercisesList extends Component {
     this.setState({
       exercises : this.state.exercises.filter(el => el._id !== id)
     });
+  }
+
+  exerciseList() {
+    return this.state.exercises.map(currentexercise => {
+      return <Exercise exercise={currentexercise} deleteExercise={this.deleteExercise} key={currentexercise._id}/>;
+    })
   }
 
   render() {
